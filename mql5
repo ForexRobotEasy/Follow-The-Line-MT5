@@ -1,0 +1,129 @@
+mql5
+// Follow The Line MT5
+// Developer's site: forexroboteasy.com
+// Developer: Forex Robot Easy Team
+
+#property copyright 'Forex Robot Easy Team'
+#property link 'forexroboteasy.com'
+
+// Indicator initialization function
+int OnInit()
+{
+    // Add necessary code here to initialize the indicator
+
+    return(INIT_SUCCEEDED);
+}
+
+// Indicator deinitialization function
+void OnDeinit(const int reason)
+{
+    // Add necessary code here to deinitialize the indicator
+}
+
+// Indicator calculation function
+int OnCalculate(const int rates_total,
+               const int prev_calculated,
+               const datetime &time[],
+               const double &open[],
+               const double &high[],
+               const double &low[],
+               const double &close[],
+               const long &tick_volume[],
+               const long &volume[],
+               const int &spread[])
+{
+    // Add necessary code here to calculate the indicator values
+
+    return(rates_total);
+}
+
+// Trading function
+void OnTick()
+{
+    // Add necessary code here to implement the trading logic
+}
+
+// Function to generate signals
+bool GenerateSignal()
+{
+    // Add necessary code here to generate trading signals
+
+    return(false);
+}
+
+// Function to check if a signal is valid
+bool IsSignalValid()
+{
+    // Add necessary code here to check if a signal is valid
+
+    return(true);
+}
+
+// Function to execute trades
+void ExecuteTrade()
+{
+    // Add necessary code here to execute trades
+
+    // Example code:
+    double lotSize = 0.01;
+    double stopLoss = 100;
+    double takeProfit = 200;
+    int ticket = OrderSend(Symbol(), OP_BUY, lotSize, Ask, 10, Ask - stopLoss * Point, Ask + takeProfit * Point, 'Follow The Line MT5', 0, 0, Green);
+}
+
+// Function to manage trades
+void ManageTrade()
+{
+    // Add necessary code here to manage trades
+
+    // Example code:
+    if (OrdersTotal() > 0)
+    {
+        for (int i = OrdersTotal() - 1; i >= 0; i--)
+        {
+            if (OrderSelect(i, SELECT_BY_POS))
+            {
+                if (OrderSymbol() == Symbol() && OrderMagicNumber() == MagicNumber)
+                {
+                    if (OrderType() == OP_BUY)
+                    {
+                        if (Bid - OrderOpenPrice() >= TakeProfit * Point)
+                        {
+                            OrderClose(OrderTicket(), OrderLots(), Bid, Red);
+                        }
+                        else if (OrderOpenPrice() - Bid >= StopLoss * Point)
+                        {
+                            OrderClose(OrderTicket(), OrderLots(), Bid, Red);
+                        }
+                    }
+                    else if (OrderType() == OP_SELL)
+                    {
+                        if (OrderOpenPrice() - Ask >= TakeProfit * Point)
+                        {
+                            OrderClose(OrderTicket(), OrderLots(), Ask, Red);
+                        }
+                        else if (Ask - OrderOpenPrice() >= StopLoss * Point)
+                        {
+                            OrderClose(OrderTicket(), OrderLots(), Ask, Red);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Function to handle trading errors
+void HandleError()
+{
+    // Add necessary code here to handle trading errors
+}
+
+// Function to handle other events
+void OnEvent(const int id,
+             const long &lparam,
+             const double &dparam,
+             const string &sparam)
+{
+    // Add necessary code here to handle other events
+}
